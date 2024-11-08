@@ -5,12 +5,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { PasswordModule } from 'primeng/password';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SignService } from '../../../services/sign.service';
 import { Credentials } from '../../../interfaces/sign';
 
@@ -24,6 +26,7 @@ import { Credentials } from '../../../interfaces/sign';
     ButtonModule,
     ToastModule,
     RippleModule,
+    ProgressSpinnerModule,
   ],
   providers: [MessageService],
   templateUrl: './sign.component.html',
@@ -32,6 +35,7 @@ import { Credentials } from '../../../interfaces/sign';
 export class SignComponent {
   private messageService = inject(MessageService);
   private signService = inject(SignService);
+  private router = inject(Router);
 
   private credentials: Credentials = {
     username: '',
@@ -64,52 +68,72 @@ export class SignComponent {
           this.credentials.password = this.signUpForm.value.cPassword;
           this.signService.signUp(this.credentials).subscribe({
             next: (res) => {
-              if (res.id) {
-                this.showMsgSuccess();
-              } else throw new Error('Oops!');
+              this.notify(
+                res.message.severity,
+                res.message.summary,
+                res.message.detail
+              );
+              if (res.message.summary === 'Done!') this.isAmember = true;
             },
-            error: (rej) => this.showMsgError(),
+            error: (rej) => {
+              this.notify(
+                rej.error.message.severity,
+                rej.error.message.summary,
+                rej.error.message.detail
+              );
+            },
           });
         } else {
-          this.showMsgDontmatch();
+          this.notify(
+            'warn',
+            'Please!',
+            'Confirm your email and your password'
+          );
         }
       }
+    } else {
+      this.notify(
+        'warn',
+        'Please!',
+        'Enter and confirm your email and your password'
+      );
     }
   }
 
   handleSignIn() {
-    console.log('handle sign in');
-    this.signService.getRoot().subscribe({
-      next: (res) => {
-        console.log('res:', res);
-      },
-      error: (rej) => {
-        console.log('rej:', rej);
-      },
-    });
+    if (this.signInForm.value.username && this.signInForm.value.password) {
+      if (this.signInForm.valid) {
+        this.credentials.username = this.signInForm.value.username;
+        this.credentials.password = this.signInForm.value.password;
+        this.signService.signIn(this.credentials).subscribe({
+          next: (res) => {
+            this.notify(
+              res.message.severity,
+              res.message.summary,
+              res.message.detail
+            );
+            if (res.message.summary === 'Done!')
+              this.router.navigateByUrl('/dashboard');
+          },
+          error: (rej) => {
+            this.notify(
+              rej.error.message.severity,
+              rej.error.message.summary,
+              rej.error.message.detail
+            );
+          },
+        });
+      }
+    } else {
+      this.notify('warn', 'Please!', 'Type your email and your password');
+    }
   }
 
-  showMsgError() {
+  notify(severity: string, summary: string, detail: string) {
     this.messageService.add({
-      severity: 'error',
-      summary: 'Error',
-      detail: 'An error occurred.',
-    });
-  }
-
-  showMsgDontmatch() {
-    this.messageService.add({
-      severity: 'warn',
-      summary: "Don't match",
-      detail: 'Please, confirm your email and your password.',
-    });
-  }
-
-  showMsgSuccess() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: 'Sign Up Successfully.',
+      severity,
+      summary,
+      detail,
     });
   }
 }

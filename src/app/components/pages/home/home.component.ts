@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -8,4 +9,10 @@ import { ButtonModule } from 'primeng/button';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {}
+export class HomeComponent {
+  private router = inject(Router);
+
+  handleClick() {
+    this.router.navigateByUrl('/sign');
+  }
+}

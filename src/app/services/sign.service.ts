@@ -18,4 +18,8 @@ export class SignService {
   signUp(credentials: Credentials): Observable<any> {
     return this.httpClient.post(this.api + 'api/sign-up', credentials);
   }
+
+  signIn(credentials: Credentials): Observable<any> {
+    return this.httpClient.post(this.api + 'api/sign-in', credentials);
+  }
 }
