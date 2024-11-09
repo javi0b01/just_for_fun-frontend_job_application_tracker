@@ -1,1 +1,14 @@
-<p>header works!</p>
+<header class="flex justify-content-between align-items-center">
+  <h1>Job Application Tracker</h1>
+  @if (storeServ.currentSession) {
+  <div>
+    <p-avatar
+      image="https://primefaces.org/cdn/primeng/images/demo/avatar/asiyajavayant.png"
+      size="xlarge"
+      shape="circle"
+      pTooltip="Jane"
+      tooltipPosition="bottom"
+    />
+  </div>
+  }
+</header>

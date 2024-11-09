@@ -33,8 +33,8 @@ import { Credentials } from '../../../interfaces/sign';
   styleUrl: './sign.component.scss',
 })
 export class SignComponent {
-  private messageService = inject(MessageService);
-  private signService = inject(SignService);
+  private messageServ = inject(MessageService);
+  private signServ = inject(SignService);
   private router = inject(Router);
 
   private credentials: Credentials = {
@@ -66,14 +66,16 @@ export class SignComponent {
         if (emailConfirmed && passwordConfirmed) {
           this.credentials.username = this.signUpForm.value.cEmail;
           this.credentials.password = this.signUpForm.value.cPassword;
-          this.signService.signUp(this.credentials).subscribe({
+          this.signServ.signUp(this.credentials).subscribe({
             next: (res) => {
               this.notify(
                 res.message.severity,
                 res.message.summary,
                 res.message.detail
               );
-              if (res.message.summary === 'Done!') this.isAmember = true;
+              if (res.message.summary === 'Done!') {
+                this.isAmember = true;
+              }
             },
             error: (rej) => {
               this.notify(
@@ -105,15 +107,17 @@ export class SignComponent {
       if (this.signInForm.valid) {
         this.credentials.username = this.signInForm.value.username;
         this.credentials.password = this.signInForm.value.password;
-        this.signService.signIn(this.credentials).subscribe({
+        this.signServ.signIn(this.credentials).subscribe({
           next: (res) => {
             this.notify(
               res.message.severity,
               res.message.summary,
               res.message.detail
             );
-            if (res.message.summary === 'Done!')
+            if (res.message.summary === 'Done!') {
+              this.signServ.login(res.data.token);
               this.router.navigateByUrl('/dashboard');
+            }
           },
           error: (rej) => {
             this.notify(
@@ -130,7 +134,7 @@ export class SignComponent {
   }
 
   notify(severity: string, summary: string, detail: string) {
-    this.messageService.add({
+    this.messageServ.add({
       severity,
       summary,
       detail,
