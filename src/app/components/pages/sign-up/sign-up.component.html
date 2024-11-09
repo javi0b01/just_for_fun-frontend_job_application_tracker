@@ -1,0 +1,70 @@
+<main>
+  <h2>Sign Up</h2>
+  <form [formGroup]="signUpForm" (ngSubmit)="handleSignUp()">
+    <div class="flex flex-column gap-4">
+      <div class="flex flex-column gap-2">
+        <label for="email">Email</label>
+        <input
+          pInputText
+          id="email"
+          aria-describedby="email-help"
+          formControlName="email"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="confirmEmail">Confirm your email</label>
+        <input
+          pInputText
+          id="confirmEmail"
+          aria-describedby="confirmEmail-help"
+          formControlName="cEmail"
+        />
+      </div>
+    </div>
+    <small id="email-help"> Your email will be your username. </small>
+    <div class="flex flex-column gap-4 my-4">
+      <div class="flex flex-column gap-2">
+        <label for="password">Password</label>
+        <p-password
+          [toggleMask]="true"
+          [feedback]="false"
+          inputId="password"
+          formControlName="password"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="confirmPassword">Confirm your password</label>
+        <p-password
+          [toggleMask]="true"
+          [feedback]="false"
+          inputId="confirmPassword"
+          formControlName="cPassword"
+        />
+      </div>
+    </div>
+    <p-button
+      type="submit"
+      label="Sign Up"
+      [raised]="true"
+      severity="help"
+      [disabled]="!signUpForm.valid"
+    />
+  </form>
+  <div class="flex align-items-center">
+    <p>already a member?</p>
+    <p-button
+      label="Sign In"
+      [link]="true"
+      (onClick)="router.navigateByUrl('/sign-in')"
+    />
+  </div>
+</main>
+<aside>
+  <p-toast
+    position="top-center"
+    [showTransformOptions]="'translateY(100%)'"
+    [showTransitionOptions]="'1000ms'"
+    [hideTransitionOptions]="'1000ms'"
+    [showTransformOptions]="'translateX(100%)'"
+  />
+</aside>

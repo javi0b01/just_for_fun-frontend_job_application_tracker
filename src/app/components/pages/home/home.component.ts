@@ -21,6 +21,6 @@ export class HomeComponent implements OnInit {
   }
 
   handleClick() {
-    this.router.navigateByUrl('/sign');
+    this.router.navigateByUrl('/sign-up');
   }
 }

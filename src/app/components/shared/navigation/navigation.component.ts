@@ -19,7 +19,7 @@ export class NavigationComponent {
   items: MenuItem[] = [
     { route: '/home', label: 'Home', icon: 'pi pi-home' },
     { route: '/dashboard', label: 'Dashboard', icon: 'pi pi-chart-line' },
-    { route: '/sign', label: 'Login', icon: 'pi pi-sign-in' },
+    { route: '/sign-in', label: 'Login', icon: 'pi pi-sign-in' },
     {
       label: 'Logout',
       icon: 'pi pi-sign-out',
