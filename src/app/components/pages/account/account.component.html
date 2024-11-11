@@ -1,5 +1,64 @@
 <main>
   <h2>Account</h2>
-  <!-- <form [formGroup]="accountForm" (ngSubmit)="handleSubmit()">
-  </form> -->
+  <form [formGroup]="accountForm" (ngSubmit)="handleSubmit()">
+    <div class="flex flex-column gap-2">
+      <label for="firstName">First Name</label>
+      <input
+        pInputText
+        id="firstName"
+        aria-describedby="firstName-help"
+        formControlName="firstName"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="lastName">Last Name</label>
+      <input
+        pInputText
+        id="lastName"
+        aria-describedby="lastName-help"
+        formControlName="lastName"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="nickname">Nickname</label>
+      <input
+        pInputText
+        id="nickname"
+        aria-describedby="nickname-help"
+        formControlName="nickname"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="image">Image</label>
+      <p-fileUpload
+        id="image"
+        aria-describedby="image-help"
+        mode="basic"
+        chooseLabel="Choose"
+        chooseIcon="pi pi-upload"
+        accept="image/*"
+        maxFileSize="1000000"
+        (onSelect)="handleSelect($event)"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="phone">Phone</label>
+      <p-inputNumber
+        inputId="integeronly"
+        id="phone"
+        aria-describedby="phone-help"
+        formControlName="phone"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="birthDay">Birth Day</label>
+      <p-calendar
+        id="birthDay"
+        aria-describedby="birthDay-help"
+        formControlName="birthDay"
+      />
+    </div>
+    <p-button type="submit" label="Submit" [raised]="true" severity="help" />
+    <!-- [disabled]="!accountForm.valid" -->
+  </form>
 </main>

@@ -1,4 +1,4 @@
-<header class="flex justify-content-between align-items-center">
+<header class="flex justify-content-between align-items-center mb-3">
   <h1>Job Application Tracker</h1>
   @if (storeServ.currentSession) {
   <div>
@@ -11,4 +11,10 @@
     />
   </div>
   }
+  <div class="text-center">
+    <p class="mb-2">
+      <i class="pi pi-{{ isDarkMode ? 'moon' : 'sun' }}"></i>
+    </p>
+    <p-inputSwitch [ngModel]="isDarkMode" (ngModelChange)="toggleTheme()" />
+  </div>
 </header>

@@ -16,10 +16,6 @@ export class SignService {
 
   private api = 'http://localhost:4000/';
 
-  getRoot(): Observable<any> {
-    return this.httpClient.get(this.api);
-  }
-
   signUp(credentials: Credentials): Observable<any> {
     return this.httpClient.post(this.api + 'api/sign-up', credentials);
   }
