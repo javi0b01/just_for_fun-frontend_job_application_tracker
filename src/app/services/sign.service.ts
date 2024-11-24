@@ -25,7 +25,10 @@ export class SignService {
   }
 
   login(token: string): void {
+    const decoded = this.jwtHelpServ.decodeToken(token);
     this.storeServ.token = token;
+    this.storeServ.recordId = decoded.id;
+    this.storeServ.profile = decoded.profile;
     localStorage.setItem('JAT', token);
   }
 
@@ -36,10 +39,5 @@ export class SignService {
 
   getLocalToken(): string | null {
     return localStorage.getItem('JAT');
-  }
-
-  getProfile(token: string): number {
-    const decoded = this.jwtHelpServ.decodeToken(token);
-    return decoded.profile;
   }
 }

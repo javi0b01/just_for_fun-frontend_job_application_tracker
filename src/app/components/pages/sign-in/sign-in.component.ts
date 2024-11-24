@@ -15,6 +15,7 @@ import { RippleModule } from 'primeng/ripple';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { SignService } from '../../../services/sign.service';
 import { Credentials } from '../../../interfaces/sign';
+import { StoreService } from '../../../services/store.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -35,6 +36,7 @@ import { Credentials } from '../../../interfaces/sign';
 export class SignInComponent {
   private messageServ = inject(MessageService);
   private signServ = inject(SignService);
+  private storeServ = inject(StoreService);
   router = inject(Router);
 
   private credentials: Credentials = {
@@ -61,9 +63,11 @@ export class SignInComponent {
             );
             if (res.message.summary === 'Done!') {
               this.signServ.login(res.data.token);
-              const profile: number = this.signServ.getProfile(res.data.token);
-              if (profile === 300) this.router.navigateByUrl('/account');
-              else this.router.navigateByUrl('/dashboard');
+              const profile: number | null = this.storeServ.profile;
+              if (profile === 100 || profile === 200 || profile === 300) {
+                if (profile === 300) this.router.navigateByUrl('/account');
+                else this.router.navigateByUrl('/dashboard');
+              } else this.notify('warn', 'Please!', 'Try again');
             }
           },
           error: (rej) => {
