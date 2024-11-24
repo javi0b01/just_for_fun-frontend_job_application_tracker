@@ -3,7 +3,7 @@ export interface IUser {
   firstName: string;
   lastName: string;
   nickname: string;
-  image: string;
+  image: File;
   phone: string;
   birthDay: Date;
 }

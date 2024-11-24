@@ -12,8 +12,8 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
-import { ApiService } from '../../../services/api.service';
 import { StoreService } from '../../../services/store.service';
+import { UserService } from '../../../services/user.service';
 import { IUser } from '../../../interfaces/userInterface';
 
 @Component({
@@ -32,18 +32,18 @@ import { IUser } from '../../../interfaces/userInterface';
   styleUrl: './account.component.scss',
 })
 export class AccountComponent implements OnInit {
-  private apiServ = inject(ApiService);
+  private router = inject(Router);
   private messageServ = inject(MessageService);
   private storeServ = inject(StoreService);
-  private router = inject(Router);
+  private userServ = inject(UserService);
 
   private recordId: string | null = null;
+  private image: File | null = null;
 
   accountForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     nickname: new FormControl(''),
-    image: new FormControl(''),
     phone: new FormControl('', Validators.required),
     birthDay: new FormControl('', Validators.required),
   });
@@ -57,23 +57,58 @@ export class AccountComponent implements OnInit {
   }
 
   handleSelect(e: FileSelectEvent) {
-    // UploadEvent
-    console.log('handle select e:', e);
+    const file: File = e.currentFiles[0];
+    if (file.type != 'image/png') {
+      this.notify('warn', 'Please!', 'Upload your image in png format');
+      return;
+    }
+    if (file.size > 1024000) {
+      this.notify('warn', 'Please!', 'Upload your image must be 1Mb maximun');
+      return;
+    }
+    this.image = e.currentFiles[0];
   }
 
   handleSubmit() {
+    if (!this.image) {
+      this.notify('warn', 'Please!', 'Upload your image');
+      return;
+    }
     if (this.accountForm.invalid) {
-      this.notify('warn', 'Please!', 'Check all fields ');
+      this.notify('warn', 'Please!', 'Check all fields');
       return;
     }
     if (this.accountForm.valid) {
-      console.log(this.accountForm.value);
       const user: any = {
         ...this.accountForm.value,
+        image: this.image,
         recordId: this.recordId,
       };
-      console.log('user:', user);
-      this.apiServ.getRoot().subscribe((res) => console.log(res));
+      this.userServ.createUser(user).subscribe({
+        next: (res) => {
+          this.notify(
+            res.message.severity,
+            res.message.summary,
+            res.message.detail
+          );
+          if (res.message.summary === 'Done!') {
+            this.router.navigateByUrl('/dashboard');
+          } else {
+            this.notify(
+              res.message.severity,
+              res.message.summary,
+              res.message.detail
+            );
+          }
+        },
+        error: (rej) => {
+          this.notify(
+            rej.error.message.severity,
+            rej.error.message.summary,
+            rej.error.message.detail
+          );
+        },
+      });
     }
   }
 

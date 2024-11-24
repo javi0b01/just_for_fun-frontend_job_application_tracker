@@ -14,14 +14,14 @@ export class SignService {
 
   private jwtHelpServ = new JwtHelperService();
 
-  private api = 'http://localhost:4000/';
+  private api = 'http://localhost:4000/api/';
 
   signUp(credentials: Credentials): Observable<any> {
-    return this.httpClient.post(this.api + 'api/sign-up', credentials);
+    return this.httpClient.post(this.api + 'sign-up', credentials);
   }
 
   signIn(credentials: Credentials): Observable<any> {
-    return this.httpClient.post(this.api + 'api/sign-in', credentials);
+    return this.httpClient.post(this.api + 'sign-in', credentials);
   }
 
   login(token: string): void {
