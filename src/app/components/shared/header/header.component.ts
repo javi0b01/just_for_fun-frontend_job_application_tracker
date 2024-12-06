@@ -1,5 +1,5 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AvatarModule } from 'primeng/avatar';
 import { TooltipModule } from 'primeng/tooltip';
 import { StoreService } from '../../../services/store.service';
@@ -13,16 +13,26 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss',
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   #document = inject(DOCUMENT);
   storeServ = inject(StoreService);
 
-  isDarkMode = false;
+  isDarkMode!: boolean;
 
-  constructor() {
-    if (this.isSystemDark()) {
-      this.toggleTheme();
-    }
+  private themeSelected!: string | null;
+  private $appTheme = this.#document.getElementById(
+    'app-theme'
+  ) as HTMLLinkElement;
+
+  ngOnInit(): void {
+    this.themeSelected = sessionStorage.getItem('JAT-theme');
+    if (this.themeSelected) {
+      this.themeSelected === 'dark'
+        ? (this.isDarkMode = true)
+        : (this.isDarkMode = false);
+      if (!this.$appTheme.href.includes(this.themeSelected))
+        this.toggleTheme();
+    } else if (this.isSystemDark()) this.toggleTheme();
   }
 
   isSystemDark(): boolean {
@@ -30,15 +40,15 @@ export class HeaderComponent {
   }
 
   toggleTheme() {
-    const $appTheme = this.#document.getElementById(
-      'app-theme'
-    ) as HTMLLinkElement;
-    if ($appTheme.href.includes('light')) {
-      $appTheme.href = 'theme-dark.css';
+    if (this.$appTheme.href.includes('light')) {
+      this.$appTheme.href = 'theme-dark.css';
       this.isDarkMode = true;
+      this.themeSelected = 'dark';
     } else {
-      $appTheme.href = 'theme-light.css';
+      this.$appTheme.href = 'theme-light.css';
       this.isDarkMode = false;
+      this.themeSelected = 'light';
     }
+    sessionStorage.setItem('JAT-theme', this.themeSelected);
   }
 }

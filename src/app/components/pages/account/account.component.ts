@@ -6,6 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { delay, of } from 'rxjs';
 import { CalendarModule } from 'primeng/calendar';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
 import { InputNumberModule } from 'primeng/inputnumber';
@@ -51,8 +52,12 @@ export class AccountComponent implements OnInit {
   ngOnInit(): void {
     this.recordId = this.storeServ.recordId;
     if (!this.recordId) {
-      this.notify('warn', 'Please!', 'Login');
-      this.router.navigateByUrl('/sign-in');
+      this.notify('warn', 'Please!', 'Login'); // TODO: fixme
+      const observable = of('');
+      const unaryFunction = observable.pipe(delay(3000));
+      unaryFunction.subscribe((result: any) => {
+        this.router.navigateByUrl('/sign-in');
+      });
     }
   }
 

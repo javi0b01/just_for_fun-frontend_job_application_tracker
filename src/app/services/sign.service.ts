@@ -40,4 +40,9 @@ export class SignService {
   getLocalToken(): string | null {
     return localStorage.getItem('JAT');
   }
+
+  isLoggedIn(): boolean {
+    if (this.getLocalToken()) return true;
+    return false;
+  }
 }
