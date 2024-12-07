@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Credentials } from '../interfaces/sign';
@@ -16,6 +16,8 @@ export class SignService {
 
   private api = 'http://localhost:4000/api/';
 
+  isLoggedIn: WritableSignal<boolean> = signal(false);
+
   signUp(credentials: Credentials): Observable<any> {
     return this.httpClient.post(this.api + 'sign-up', credentials);
   }
@@ -29,11 +31,13 @@ export class SignService {
     this.storeServ.token = token;
     this.storeServ.recordId = decoded.id;
     this.storeServ.profile = decoded.profile;
+    this.isLoggedIn.set(true);
     localStorage.setItem('JAT', token);
   }
 
   logout(): void {
     this.storeServ.reset();
+    this.isLoggedIn.set(false);
     localStorage.removeItem('JAT');
   }
 
@@ -41,8 +45,12 @@ export class SignService {
     return localStorage.getItem('JAT');
   }
 
-  isLoggedIn(): boolean {
-    if (this.getLocalToken()) return true;
+  getIsLoggedIn(): boolean {
+    if (this.getLocalToken()) {
+      this.isLoggedIn.set(true);
+      return true;
+    }
+    this.isLoggedIn.set(false);
     return false;
   }
 }

@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, Signal, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { SignService } from '../../../services/sign.service';
+import { toObservable } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-navigation',
@@ -15,6 +16,13 @@ import { SignService } from '../../../services/sign.service';
 export class NavigationComponent implements OnInit {
   private router = inject(Router);
   private signServ = inject(SignService);
+
+  isLoggedIn: Signal<boolean> = this.signServ.isLoggedIn;
+  isLoggedIn$ = toObservable(this.isLoggedIn);
+
+  result$ = this.isLoggedIn$.subscribe((value: any) =>
+    console.log('isLoggedIn:', value)
+  );
 
   private menuBase: MenuItem[] = [
     { route: '/home', label: 'Home', icon: 'pi pi-home' },
@@ -34,6 +42,7 @@ export class NavigationComponent implements OnInit {
       },
     },
   ];
+  //private isLoggedIn = signal(this.signServ.getIsLoggedIn());
 
   items!: MenuItem[];
 
@@ -42,7 +51,7 @@ export class NavigationComponent implements OnInit {
   }
 
   setMenu() {
-    if (!this.signServ.isLoggedIn())
+    if (!this.signServ.getIsLoggedIn())
       this.items = [...this.menuBase, ...this.optionA];
     else this.items = [...this.menuBase, ...this.optionB];
   }
