@@ -20,6 +20,10 @@ export class UserService {
     payload.append('image', user.image);
     payload.append('phone', user.phone);
     payload.append('birthDay', user.birthDay);
-    return this.httpClient.post(this.api + 'users', payload);
+    return this.httpClient.post(`${this.api}users`, payload);
+  }
+
+  getUserByRecord(id: string): Observable<any> {
+    return this.httpClient.get(`${this.api}users/record/${id}`);
   }
 }

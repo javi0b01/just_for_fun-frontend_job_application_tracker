@@ -17,6 +17,7 @@ export class HeaderComponent implements OnInit {
   #document = inject(DOCUMENT);
   storeServ = inject(StoreService);
 
+  currentSession!: any;
   isDarkMode!: boolean;
 
   private themeSelected!: string | null;
@@ -25,6 +26,8 @@ export class HeaderComponent implements OnInit {
   ) as HTMLLinkElement;
 
   ngOnInit(): void {
+    /* this.currentSession = this.storeServ.getCurrentSession();
+    console.log('currentSession:', this.currentSession); */
     this.themeSelected = sessionStorage.getItem('JAT-theme');
     if (this.themeSelected) {
       this.themeSelected === 'dark'

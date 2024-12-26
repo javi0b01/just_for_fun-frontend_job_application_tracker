@@ -63,7 +63,7 @@ export class SignInComponent {
             );
             if (res.message.summary === 'Done!') {
               this.signServ.login(res.data.token);
-              const profile: number | null = this.storeServ.profile;
+              const profile: number | null = this.storeServ.getProfile();
               if (profile === 100 || profile === 200 || profile === 300) {
                 if (profile === 300) this.router.navigateByUrl('/account');
                 else this.router.navigateByUrl('/dashboard');

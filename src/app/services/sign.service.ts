@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Credentials } from '../interfaces/sign';
 import { StoreService } from './store.service';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,30 +28,32 @@ export class SignService {
   }
 
   login(token: string): void {
-    const decoded = this.jwtHelpServ.decodeToken(token);
-    this.storeServ.token = token;
-    this.storeServ.recordId = decoded.id;
-    this.storeServ.profile = decoded.profile;
-    this.isLoggedIn.set(true);
-    localStorage.setItem('JAT', token);
+    this.setStorage(token);
+    sessionStorage.setItem('JAT', token);
   }
 
   logout(): void {
     this.storeServ.reset();
     this.isLoggedIn.set(false);
-    localStorage.removeItem('JAT');
+    sessionStorage.removeItem('JAT');
   }
 
   getLocalToken(): string | null {
-    return localStorage.getItem('JAT');
+    return sessionStorage.getItem('JAT');
   }
 
   getIsLoggedIn(): boolean {
-    if (this.getLocalToken()) {
-      this.isLoggedIn.set(true);
-      return true;
+    if (!this.isLoggedIn()) {
+      const token = this.getLocalToken();
+      if (token) this.setStorage(token);
     }
-    this.isLoggedIn.set(false);
-    return false;
+    return this.isLoggedIn();
+  }
+
+  setStorage(token: string) {
+    const decoded = this.jwtHelpServ.decodeToken(token);
+    this.storeServ.setRecordId(decoded.id);
+    this.storeServ.setProfile(decoded.profile);
+    this.isLoggedIn.set(true);
   }
 }

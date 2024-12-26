@@ -1,5 +1,6 @@
 <main>
   <h2>Account</h2>
+  @if(isLoggedIn) {
   <form [formGroup]="accountForm" (ngSubmit)="handleSubmit()">
     <div class="flex flex-column gap-2">
       <label for="firstName">First Name</label>
@@ -66,6 +67,11 @@
     <p-button type="submit" label="Submit" [raised]="true" severity="help" />
     <!-- [disabled]="!accountForm.valid" -->
   </form>
+  }@else {<p-messages
+    [(value)]="message"
+    [enableService]="false"
+    [closable]="false"
+  />}
 </main>
 <aside>
   <p-toast

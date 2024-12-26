@@ -13,9 +13,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
+import { MessagesModule } from 'primeng/messages';
+import { Message } from 'primeng/api';
+import { IUser } from '../../../interfaces/userInterface';
 import { StoreService } from '../../../services/store.service';
 import { UserService } from '../../../services/user.service';
-import { IUser } from '../../../interfaces/userInterface';
+import { SignService } from '../../../services/sign.service';
 
 @Component({
   selector: 'app-account',
@@ -27,6 +30,7 @@ import { IUser } from '../../../interfaces/userInterface';
     CalendarModule,
     ToastModule,
     RippleModule,
+    MessagesModule,
   ],
   providers: [MessageService],
   templateUrl: './account.component.html',
@@ -35,11 +39,14 @@ import { IUser } from '../../../interfaces/userInterface';
 export class AccountComponent implements OnInit {
   private router = inject(Router);
   private messageServ = inject(MessageService);
+  private signServ = inject(SignService);
   private storeServ = inject(StoreService);
   private userServ = inject(UserService);
 
   private recordId: string | null = null;
   private image: File | null = null;
+
+  isLoggedIn!: boolean;
 
   accountForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
@@ -48,17 +55,39 @@ export class AccountComponent implements OnInit {
     phone: new FormControl('', Validators.required),
     birthDay: new FormControl('', Validators.required),
   });
+  message: Message[] = [
+    { severity: 'warn', summary: 'Please!', detail: 'Login!' },
+  ];
 
   ngOnInit(): void {
-    this.recordId = this.storeServ.recordId;
-    if (!this.recordId) {
-      this.notify('warn', 'Please!', 'Login'); // TODO: fixme
-      const observable = of('');
-      const unaryFunction = observable.pipe(delay(3000));
-      unaryFunction.subscribe((result: any) => {
-        this.router.navigateByUrl('/sign-in');
-      });
+    this.isLoggedIn = this.signServ.getIsLoggedIn();
+    if (!this.isLoggedIn) {
+      this.redirectToLogin();
+    } else {
+      this.recordId = this.storeServ.getRecordId();
+      if (this.recordId) {
+        this.userServ.getUserByRecord(this.recordId).subscribe((res) => {
+          if (res.message.summary === 'Done!') {
+            this.accountForm.setValue({
+              firstName: res.data.firstName,
+              lastName: res.data.lastName,
+              nickname: res.data.nickname,
+              phone: res.data.phone,
+              birthDay: res.data.birthDay,
+            });
+            console.log('accountForm:', this.accountForm);
+          }
+        });
+      }
     }
+  }
+
+  redirectToLogin(): void {
+    const observable = of('');
+    const unaryFunction = observable.pipe(delay(3000));
+    unaryFunction.subscribe((result: any) => {
+      this.router.navigateByUrl('/sign-in');
+    });
   }
 
   handleSelect(e: FileSelectEvent) {
