@@ -1,6 +1,10 @@
 <main>
   <h2>Account</h2>
-  @if(isLoggedIn) {
+  @if(isLoggedIn) { @if (currentSession) {
+  <p>Do you want to update your profile?</p>
+  }@else {
+  <p>Welcome!, to start please, first complete your profile</p>
+  }
   <form [formGroup]="accountForm" (ngSubmit)="handleSubmit()">
     <div class="flex flex-column gap-2">
       <label for="firstName">First Name</label>

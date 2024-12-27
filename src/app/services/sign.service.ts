@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 export class SignService {
   private httpClient = inject(HttpClient);
   private storeServ = inject(StoreService);
+  private userServ = inject(UserService);
 
   private jwtHelpServ = new JwtHelperService();
 
@@ -33,27 +34,34 @@ export class SignService {
   }
 
   logout(): void {
-    this.storeServ.reset();
-    this.isLoggedIn.set(false);
     sessionStorage.removeItem('JAT');
+    this.storeServ.clearStore();
+    this.isLoggedIn.set(false);
   }
 
-  getLocalToken(): string | null {
+  getSessionToken(): string | null {
     return sessionStorage.getItem('JAT');
   }
 
   getIsLoggedIn(): boolean {
     if (!this.isLoggedIn()) {
-      const token = this.getLocalToken();
+      const token = this.getSessionToken();
       if (token) this.setStorage(token);
     }
     return this.isLoggedIn();
   }
 
-  setStorage(token: string) {
+  setStorage(token: string): void {
     const decoded = this.jwtHelpServ.decodeToken(token);
     this.storeServ.setRecordId(decoded.id);
     this.storeServ.setProfile(decoded.profile);
+    this.userServ.getUserByRecord(decoded.id).subscribe({
+      next: (res) => {
+        if (res.message.summary === 'Done!')
+          this.storeServ.setCurrentSession(res.data);
+      },
+      error: (err) => null,
+    });
     this.isLoggedIn.set(true);
   }
 }

@@ -5,6 +5,7 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { MenuItem } from 'primeng/api';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { SignService } from '../../../services/sign.service';
+import { StoreService } from '../../../services/store.service';
 
 @Component({
   selector: 'app-navigation',
@@ -16,22 +17,26 @@ import { SignService } from '../../../services/sign.service';
 export class NavigationComponent implements OnInit {
   private router = inject(Router);
   private signServ = inject(SignService);
+  private storeServ = inject(StoreService);
 
   private isLoggedIn: Signal<boolean> = this.signServ.isLoggedIn;
-  private isLoggedIn$ = toObservable(this.isLoggedIn);
 
-  result$ = this.isLoggedIn$.subscribe((value: any) => {
+  private isLoggedIn$ = toObservable(this.isLoggedIn);
+  private observer$ = this.isLoggedIn$.subscribe((value: any) => {
     this.setMenu();
   });
 
-  private menuBase: MenuItem[] = [
+  private home: MenuItem[] = [
     { route: '/home', label: 'Home', icon: 'pi pi-home' },
   ];
-  private optionA: MenuItem[] = [
+  private login: MenuItem[] = [
     { route: '/sign-in', label: 'Login', icon: 'pi pi-sign-in' },
   ];
-  private optionB: MenuItem[] = [
+  private dashboard: MenuItem[] = [
     { route: '/dashboard', label: 'Dashboard', icon: 'pi pi-chart-line' },
+  ];
+  private account: MenuItem[] = [
+    { route: '/account', label: 'Account', icon: 'pi pi-user' },
     {
       label: 'Logout',
       icon: 'pi pi-sign-out',
@@ -51,7 +56,12 @@ export class NavigationComponent implements OnInit {
 
   setMenu() {
     if (!this.signServ.getIsLoggedIn())
-      this.items = [...this.menuBase, ...this.optionA];
-    else this.items = [...this.menuBase, ...this.optionB];
+      this.items = [...this.home, ...this.login];
+    else {
+      const profile = this.storeServ.getProfile();
+      if (profile === 100 || profile === 200)
+        this.items = [...this.home, ...this.dashboard, ...this.account];
+      if (profile === 300) this.items = [...this.account];
+    }
   }
 }

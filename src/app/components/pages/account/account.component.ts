@@ -15,7 +15,7 @@ import { ToastModule } from 'primeng/toast';
 import { RippleModule } from 'primeng/ripple';
 import { MessagesModule } from 'primeng/messages';
 import { Message } from 'primeng/api';
-import { IUser } from '../../../interfaces/userInterface';
+import { IUserInfo } from '../../../interfaces/userInterface';
 import { StoreService } from '../../../services/store.service';
 import { UserService } from '../../../services/user.service';
 import { SignService } from '../../../services/sign.service';
@@ -46,8 +46,11 @@ export class AccountComponent implements OnInit {
   private recordId: string | null = null;
   private image: File | null = null;
 
+  private currentSession$ = this.storeServ.currentSession$;
+
   isLoggedIn!: boolean;
 
+  currentSession: IUserInfo | null = null;
   accountForm = new FormGroup({
     firstName: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
@@ -66,16 +69,16 @@ export class AccountComponent implements OnInit {
     } else {
       this.recordId = this.storeServ.getRecordId();
       if (this.recordId) {
-        this.userServ.getUserByRecord(this.recordId).subscribe((res) => {
-          if (res.message.summary === 'Done!') {
+        this.currentSession$.subscribe((data) => {
+          if (data) {
+            this.currentSession = data;
             this.accountForm.setValue({
-              firstName: res.data.firstName,
-              lastName: res.data.lastName,
-              nickname: res.data.nickname,
-              phone: res.data.phone,
-              birthDay: res.data.birthDay,
+              firstName: this.currentSession.firstName,
+              lastName: this.currentSession.lastName,
+              nickname: this.currentSession.nickname,
+              phone: this.currentSession.phone,
+              birthDay: this.currentSession.birthDay.toString(),
             });
-            console.log('accountForm:', this.accountForm);
           }
         });
       }

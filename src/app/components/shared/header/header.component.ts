@@ -1,10 +1,11 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { AvatarModule } from 'primeng/avatar';
 import { TooltipModule } from 'primeng/tooltip';
-import { StoreService } from '../../../services/store.service';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import { FormsModule } from '@angular/forms';
+import { IUserInfo } from '../../../interfaces/userInterface';
+import { StoreService } from '../../../services/store.service';
 
 @Component({
   selector: 'app-header',
@@ -17,17 +18,21 @@ export class HeaderComponent implements OnInit {
   #document = inject(DOCUMENT);
   storeServ = inject(StoreService);
 
-  currentSession!: any;
-  isDarkMode!: boolean;
-
   private themeSelected!: string | null;
   private $appTheme = this.#document.getElementById(
     'app-theme'
   ) as HTMLLinkElement;
 
+  private currentSession$ = this.storeServ.currentSession$;
+  private observer$ = this.currentSession$.subscribe(
+    (data) => (this.currentSession = data)
+  );
+
+  isDarkMode!: boolean;
+
+  currentSession: IUserInfo | null = null;
+
   ngOnInit(): void {
-    /* this.currentSession = this.storeServ.getCurrentSession();
-    console.log('currentSession:', this.currentSession); */
     this.themeSelected = sessionStorage.getItem('JAT-theme');
     if (this.themeSelected) {
       this.themeSelected === 'dark'

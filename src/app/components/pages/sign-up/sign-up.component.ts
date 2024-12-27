@@ -13,8 +13,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SignService } from '../../../services/sign.service';
 import { Credentials } from '../../../interfaces/sign';
+import { SignService } from '../../../services/sign.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -33,14 +33,10 @@ import { Credentials } from '../../../interfaces/sign';
   styleUrl: './sign-up.component.scss',
 })
 export class SignUpComponent {
-  private messageServ = inject(MessageService);
-  private signServ = inject(SignService);
   router = inject(Router);
 
-  private credentials: Credentials = {
-    username: '',
-    password: '',
-  };
+  private messageServ = inject(MessageService);
+  private signServ = inject(SignService);
 
   signUpForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -48,6 +44,11 @@ export class SignUpComponent {
     password: new FormControl('', Validators.required),
     cPassword: new FormControl('', Validators.required),
   });
+
+  private credentials: Credentials = {
+    username: '',
+    password: '',
+  };
 
   handleSignUp() {
     if (this.signUpForm.value.cEmail && this.signUpForm.value.cPassword) {
@@ -78,21 +79,19 @@ export class SignUpComponent {
               );
             },
           });
-        } else {
+        } else
           this.notify(
             'warn',
             'Please!',
             'Confirm your email and your password'
           );
-        }
       }
-    } else {
+    } else
       this.notify(
         'warn',
         'Please!',
         'Enter and confirm your email and your password'
       );
-    }
   }
 
   notify(severity: string, summary: string, detail: string) {

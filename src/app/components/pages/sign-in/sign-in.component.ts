@@ -13,8 +13,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { RippleModule } from 'primeng/ripple';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { SignService } from '../../../services/sign.service';
 import { Credentials } from '../../../interfaces/sign';
+import { SignService } from '../../../services/sign.service';
 import { StoreService } from '../../../services/store.service';
 
 @Component({
@@ -34,20 +34,21 @@ import { StoreService } from '../../../services/store.service';
   styleUrl: './sign-in.component.scss',
 })
 export class SignInComponent {
+  router = inject(Router);
+
   private messageServ = inject(MessageService);
   private signServ = inject(SignService);
   private storeServ = inject(StoreService);
-  router = inject(Router);
-
-  private credentials: Credentials = {
-    username: '',
-    password: '',
-  };
 
   signInForm = new FormGroup({
     username: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', Validators.required),
   });
+
+  private credentials: Credentials = {
+    username: '',
+    password: '',
+  };
 
   handleSignIn() {
     if (this.signInForm.value.username && this.signInForm.value.password) {
@@ -79,9 +80,7 @@ export class SignInComponent {
           },
         });
       }
-    } else {
-      this.notify('warn', 'Please!', 'Type your email and your password');
-    }
+    } else this.notify('warn', 'Please!', 'Type your email and your password');
   }
 
   notify(severity: string, summary: string, detail: string) {

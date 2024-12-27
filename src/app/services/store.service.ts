@@ -1,51 +1,57 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { IUserInfo } from '../interfaces/userInterface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StoreService {
-  private _recordId: string | null = null;
-  private _profile: number | null = null;
-  private _userId: string | null = null;
-  private _currentSession: IUserInfo | null = null;
+  private _recordId = new BehaviorSubject<string | null>(null);
+  private _profile = new BehaviorSubject<number | null>(null);
+  private _userId = new BehaviorSubject<string | null>(null);
+  private _currentSession = new BehaviorSubject<IUserInfo | null>(null);
+
+  recordId$ = this._recordId.asObservable();
+  profile$ = this._profile.asObservable();
+  userId$ = this._userId.asObservable();
+  currentSession$ = this._currentSession.asObservable();
 
   getRecordId(): string | null {
-    return this._recordId;
+    return this._recordId.getValue();
   }
 
   getProfile(): number | null {
-    return this._profile;
+    return this._profile.getValue();
   }
 
   getUserId(): string | null {
-    return this._userId;
+    return this._userId.getValue();
   }
 
   getCurrentSession(): IUserInfo | null {
-    return this._currentSession;
+    return this._currentSession.getValue();
   }
 
   setRecordId(recordId: string | null): void {
-    this._recordId = recordId;
+    this._recordId.next(recordId);
   }
 
   setProfile(profile: number | null): void {
-    this._profile = profile;
+    this._profile.next(profile);
   }
 
   setUserId(userId: string | null): void {
-    this._userId = userId;
+    this._userId.next(userId);
   }
 
-  setCurrentSession(currentSession: IUserInfo | null): void {
-    this._currentSession = currentSession;
+  setCurrentSession(session: IUserInfo | null): void {
+    this._currentSession.next(session);
   }
 
-  reset() {
-    this._recordId = null;
-    this._profile = null;
-    this._userId = null;
-    this._currentSession = null;
+  clearStore() {
+    this.setRecordId(null);
+    this.setProfile(null);
+    this.setUserId(null);
+    this.setCurrentSession(null);
   }
 }

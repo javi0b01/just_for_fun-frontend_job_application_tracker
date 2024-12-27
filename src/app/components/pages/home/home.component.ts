@@ -1,8 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
-import { SignService } from '../../../services/sign.service';
-import { StoreService } from '../../../services/store.service';
 
 @Component({
   selector: 'app-home',
