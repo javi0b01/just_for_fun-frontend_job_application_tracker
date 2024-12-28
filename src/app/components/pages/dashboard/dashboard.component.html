@@ -1,1 +1,133 @@
-<p>dashboard works!</p>
+<main>
+  <hgroup>
+    <h2>Job tracker</h2>
+    <h3>Track and organize your job search</h3>
+    <h4>All your jobs search in one board</h4>
+  </hgroup>
+  <form [formGroup]="jatForm" (ngSubmit)="handleSubmit()">
+    <div class="flex flex-column gap-2">
+      <label for="dateApplied">Date Applied</label>
+      <input
+        pInputText
+        id="dateApplied"
+        aria-describedby="dateApplied-help"
+        autocomplete="off"
+        formControlName="dateApplied"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="response">Response</label>
+      <input
+        pInputText
+        id="response"
+        aria-describedby="response-help"
+        autocomplete="off"
+        formControlName="response"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="position">Position</label>
+      <input
+        pInputText
+        id="position"
+        aria-describedby="position-help"
+        autocomplete="off"
+        formControlName="position"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="model">Model</label>
+      <input
+        pInputText
+        id="model"
+        aria-describedby="model-help"
+        autocomplete="off"
+        formControlName="model"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="source">Source</label>
+      <input
+        pInputText
+        id="source"
+        aria-describedby="source-help"
+        autocomplete="off"
+        formControlName="source"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="company">Company</label>
+      <input
+        pInputText
+        id="company"
+        aria-describedby="company-help"
+        autocomplete="off"
+        formControlName="company"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="contact">Contact</label>
+      <input
+        pInputText
+        id="contact"
+        aria-describedby="contact-help"
+        autocomplete="off"
+        formControlName="contact"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="url">URL</label>
+      <input
+        pInputText
+        id="url"
+        aria-describedby="url-help"
+        autocomplete="off"
+        formControlName="url"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="uri">URI</label>
+      <input
+        pInputText
+        id="uri"
+        aria-describedby="uri-help"
+        autocomplete="off"
+        formControlName="uri"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="email">Email</label>
+      <input
+        pInputText
+        id="email"
+        aria-describedby="email-help"
+        autocomplete="off"
+        formControlName="email"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="phone">Phone</label>
+      <input
+        pInputText
+        id="phone"
+        aria-describedby="phone-help"
+        autocomplete="off"
+        formControlName="phone"
+      />
+    </div>
+    <div class="flex flex-column gap-2">
+      <label for="notes">Notes</label>
+      <input
+        pInputText
+        id="notes"
+        aria-describedby="notes-help"
+        autocomplete="off"
+        formControlName="notes"
+      />
+    </div>
+    <p-button type="submit" label="Submit" [raised]="true" severity="help" />
+  </form>
+</main>
+<!--
+      [disabled]="!signInForm.valid"
+-->

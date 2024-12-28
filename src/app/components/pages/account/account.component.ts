@@ -9,6 +9,7 @@ import {
 import { delay, of } from 'rxjs';
 import { CalendarModule } from 'primeng/calendar';
 import { FileSelectEvent, FileUploadModule } from 'primeng/fileupload';
+import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -26,6 +27,7 @@ import { SignService } from '../../../services/sign.service';
   imports: [
     ReactiveFormsModule,
     FileUploadModule,
+    InputTextModule,
     InputNumberModule,
     CalendarModule,
     ToastModule,
