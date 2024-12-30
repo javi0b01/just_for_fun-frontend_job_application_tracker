@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormsModule,
   FormControl,
@@ -13,6 +13,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { ToastModule } from 'primeng/toast';
+import { ApplicationService } from '../../../services/application.service';
+import { StoreService } from '../../../services/store.service';
 
 interface Response {
   label: string;
@@ -36,13 +40,17 @@ interface Model {
     FloatLabelModule,
     InputTextareaModule,
     ButtonModule,
+    TableModule,
+    ToastModule,
   ],
   providers: [MessageService],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   private messageServ = inject(MessageService);
+  private appServ = inject(ApplicationService);
+  private storeServ = inject(StoreService);
 
   responses: Response[] = [
     { label: 'No Response', value: 'no response' },
@@ -80,9 +88,58 @@ export class DashboardComponent {
     }),
   });
 
+  products: any[] = [
+    {
+      id: '1000',
+      code: 'f230fh0g3',
+      name: 'Bamboo Watch',
+      description: 'Product Description',
+      image: 'bamboo-watch.jpg',
+      price: 65,
+      category: 'Accessories',
+      quantity: 24,
+      inventoryStatus: 'INSTOCK',
+      rating: 5,
+    },
+  ];
+
+  ngOnInit(): void {
+    this.appServ.getList().subscribe((list) => console.log('list:', list));
+  }
+
   handleSubmit() {
-    console.log('handle submit');
-    console.log(this.jatForm.value);
+    if (this.jatForm.valid) {
+      const payload = {
+        userId: this.storeServ.getUserId(),
+        ...this.jatForm.value,
+      };
+      if (payload.application) {
+        const response: any = this.jatForm.value.application?.response;
+        const model: any = this.jatForm.value.application?.model;
+        payload.application.response = response.value;
+        payload.application.model = model.value;
+      }
+      this.appServ.newRegister(payload).subscribe({
+        next: (res) => {
+          this.notify(
+            res.message.severity,
+            res.message.summary,
+            res.message.detail
+          );
+          if (res.message.summary === 'Done!') {
+            //this.router.navigateByUrl('/sign-in');
+            console.log('Done!');
+          }
+        },
+        error: (rej) => {
+          this.notify(
+            rej.error.message.severity,
+            rej.error.message.summary,
+            rej.error.message.detail
+          );
+        },
+      });
+    } else this.notify('warn', 'Please!', 'Missing required field');
   }
 
   notify(severity: string, summary: string, detail: string) {

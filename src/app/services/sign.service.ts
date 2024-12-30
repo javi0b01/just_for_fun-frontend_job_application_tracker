@@ -57,8 +57,10 @@ export class SignService {
     this.storeServ.setProfile(decoded.profile);
     this.userServ.getUserByRecord(decoded.id).subscribe({
       next: (res) => {
-        if (res.message.summary === 'Done!')
+        if (res.message.summary === 'Done!') {
+          this.storeServ.setUserId(res.data.id);
           this.storeServ.setCurrentSession(res.data);
+        }
       },
       error: (err) => null,
     });

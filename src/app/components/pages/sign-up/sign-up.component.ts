@@ -85,7 +85,7 @@ export class SignUpComponent {
             'Please!',
             'Confirm your email and your password'
           );
-      }
+      } else this.notify('warn', 'Please!', 'Missing required field');
     } else
       this.notify(
         'warn',

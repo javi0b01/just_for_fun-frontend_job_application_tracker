@@ -79,7 +79,7 @@ export class SignInComponent {
             );
           },
         });
-      }
+      } else this.notify('warn', 'Please!', 'Missing required field');
     } else this.notify('warn', 'Please!', 'Type your email and your password');
   }
 
