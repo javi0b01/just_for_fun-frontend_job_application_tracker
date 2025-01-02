@@ -1,0 +1,47 @@
+@if (apps && apps.length > 0) {
+<p-table
+  [columns]="cols"
+  [value]="apps"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns">
+        {{ col.header }}
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td *ngFor="let col of columns">
+        <div
+          *ngIf="
+            col.type === 'link' &&
+              rowData[col.section][col.field] &&
+              rowData[col.section][col.field].startsWith('http');
+            else elseBlock
+          "
+        >
+          <a
+            href="{{ rowData[col.section][col.field] }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            ><i class="pi pi-external-link"></i
+          ></a>
+        </div>
+        <ng-template #elseBlock>
+          <div *ngIf="col.type === 'date'; else elseBlock">
+            {{ rowData[col.section][col.field] | date }}
+          </div>
+          <ng-template #elseBlock>
+            {{ rowData[col.section][col.field] }}
+          </ng-template>
+        </ng-template>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+}@else {
+<p>You don't have any records created yet.</p>
+<p>To create a record press the add button.</p>
+}

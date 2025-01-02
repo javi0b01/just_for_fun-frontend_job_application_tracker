@@ -1,0 +1,160 @@
+<form [formGroup]="jatForm" (ngSubmit)="handleSubmit()">
+  <div formGroupName="job">
+    <fieldset>
+      <legend>Job</legend>
+      <div class="flex flex-column gap-2">
+        <label for="source">Source <span class="required">*</span></label>
+        <input
+          pInputText
+          id="source"
+          aria-describedby="source-help"
+          autocomplete="off"
+          required
+          formControlName="source"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="uri">URI</label>
+        <input
+          pInputText
+          id="uri"
+          aria-describedby="uri-help"
+          autocomplete="off"
+          formControlName="uri"
+        />
+      </div>
+    </fieldset>
+  </div>
+  <div formGroupName="company">
+    <fieldset>
+      <legend>Company</legend>
+      <div class="flex flex-column gap-2">
+        <label for="name">Name <span class="required">*</span></label>
+        <input
+          pInputText
+          id="name"
+          aria-describedby="name-help"
+          autocomplete="off"
+          required
+          formControlName="name"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="contact">Contact</label>
+        <input
+          pInputText
+          id="contact"
+          aria-describedby="contact-help"
+          autocomplete="off"
+          formControlName="contact"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="url">URL</label>
+        <input
+          pInputText
+          id="url"
+          aria-describedby="url-help"
+          autocomplete="off"
+          formControlName="url"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="email">Email</label>
+        <input
+          pInputText
+          id="email"
+          aria-describedby="email-help"
+          autocomplete="off"
+          formControlName="email"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="phone">Phone</label>
+        <input
+          pInputText
+          id="phone"
+          aria-describedby="phone-help"
+          autocomplete="off"
+          formControlName="phone"
+        />
+      </div>
+    </fieldset>
+  </div>
+  <div formGroupName="application">
+    <fieldset>
+      <legend>Application</legend>
+      <div class="flex flex-column gap-2">
+        <label for="dateApplied"
+          >Date Applied <span class="required">*</span></label
+        >
+        <p-calendar
+          id="dateApplied"
+          aria-describedby="dateApplied-help"
+          autocomplete="off"
+          required
+          formControlName="dateApplied"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="response">Response <span class="required">*</span></label>
+        <p-dropdown
+          id="response"
+          aria-describedby="response-help"
+          autocomplete="off"
+          [options]="responses"
+          optionLabel="label"
+          placeholder="Select ..."
+          required
+          formControlName="response"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="position">Position <span class="required">*</span></label>
+        <input
+          pInputText
+          id="position"
+          aria-describedby="position-help"
+          autocomplete="off"
+          required
+          formControlName="position"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <label for="model">Model <span class="required">*</span></label>
+        <p-dropdown
+          id="model"
+          aria-describedby="model-help"
+          autocomplete="off"
+          [options]="models"
+          optionLabel="label"
+          placeholder="Select ..."
+          required
+          formControlName="model"
+        />
+      </div>
+      <div class="flex flex-column gap-2">
+        <p-floatLabel>
+          <textarea
+            id="notes"
+            aria-describedby="notes-help"
+            autocomplete="off"
+            formControlName="notes"
+            rows="5"
+            cols="30"
+            pInputTextarea
+          >
+          </textarea>
+          <label for="notes">Notes</label>
+        </p-floatLabel>
+      </div>
+    </fieldset>
+  </div>
+  <p-button
+    type="submit"
+    label="Submit"
+    [raised]="true"
+    severity="help"
+    [disabled]="!jatForm.valid"
+  />
+</form>
