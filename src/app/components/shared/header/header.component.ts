@@ -33,7 +33,7 @@ export class HeaderComponent implements OnInit {
   currentSession: IUserInfo | null = null;
 
   ngOnInit(): void {
-    this.themeSelected = sessionStorage.getItem('JAT-theme');
+    this.themeSelected = localStorage.getItem('JAT-theme');
     if (this.themeSelected) {
       this.themeSelected === 'dark'
         ? (this.isDarkMode = true)
@@ -57,6 +57,6 @@ export class HeaderComponent implements OnInit {
       this.isDarkMode = false;
       this.themeSelected = 'light';
     }
-    sessionStorage.setItem('JAT-theme', this.themeSelected);
+    localStorage.setItem('JAT-theme', this.themeSelected);
   }
 }

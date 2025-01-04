@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import {
   FormsModule,
   FormControl,
@@ -14,6 +14,12 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { ApplicationService } from '../../../../services/application.service';
 import { StoreService } from '../../../../services/store.service';
+
+interface INotify {
+  severity: string;
+  summary: string;
+  detail: string;
+}
 
 interface Response {
   label: string;
@@ -44,6 +50,8 @@ interface Model {
 export class JatFormComponent {
   private appServ = inject(ApplicationService);
   private storeServ = inject(StoreService);
+
+  @Output() notifyEvent: EventEmitter<INotify> = new EventEmitter<INotify>();
 
   responses: Response[] = [
     { label: 'No Response', value: 'no response' },
@@ -95,26 +103,29 @@ export class JatFormComponent {
       }
       this.appServ.newRegister(payload).subscribe({
         next: (res) => {
-          console.log('res:', res);
-          /* this.notify(
-            res.message.severity,
-            res.message.summary,
-            res.message.detail
-          ); */
+          this.notifyEvent.emit({
+            severity: res.message.severity,
+            summary: res.message.summary,
+            detail: res.message.detail,
+          });
           if (res.message.summary === 'Done!') {
             //this.router.navigateByUrl('/sign-in');
             console.log('Done!');
           }
         },
         error: (rej) => {
-          console.log('reJ:', rej);
-          /* this.notify(
-            rej.error.message.severity,
-            rej.error.message.summary,
-            rej.error.message.detail
-          ); */
+          this.notifyEvent.emit({
+            severity: rej.error.message.severity,
+            summary: rej.error.message.summary,
+            detail: rej.error.message.detail,
+          });
         },
       });
-    } else console.log('else...'); //this.notify('warn', 'Please!', 'Missing required field');
+    } else
+      this.notifyEvent.emit({
+        severity: 'warn',
+        summary: 'Please!',
+        detail: 'Missing required field',
+      });
   }
 }

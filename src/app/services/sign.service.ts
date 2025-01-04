@@ -34,6 +34,7 @@ export class SignService {
   }
 
   logout(): void {
+    document.cookie = 'name=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
     sessionStorage.removeItem('JAT');
     this.storeServ.clearStore();
     this.isLoggedIn.set(false);
@@ -60,6 +61,7 @@ export class SignService {
         if (res.message.summary === 'Done!') {
           this.storeServ.setUserId(res.data.id);
           this.storeServ.setCurrentSession(res.data);
+          document.cookie = 'name=' + res.data.firstName + ';path=/';
         }
       },
       error: (err) => null,

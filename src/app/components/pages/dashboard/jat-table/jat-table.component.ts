@@ -1,7 +1,19 @@
-import { Component, inject, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { ApplicationService } from '../../../../services/application.service';
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
+
+interface INotify {
+  severity: string;
+  summary: string;
+  detail: string;
+}
 
 interface Column {
   type?: string;
@@ -20,13 +32,30 @@ interface Column {
 export class JatTableComponent implements OnInit {
   private appServ = inject(ApplicationService);
 
+  @Output() notifyEvent: EventEmitter<INotify> = new EventEmitter<INotify>();
+
   cols!: Column[];
 
   apps!: any[];
 
   ngOnInit(): void {
-    this.appServ.getList().subscribe((res) => {
-      this.apps = res.data || [];
+    this.appServ.getList().subscribe({
+      next: (res) => {
+        this.notifyEvent.emit({
+          severity: res.message.severity,
+          summary: res.message.summary,
+          detail: res.message.detail,
+        });
+        this.apps = res.data;
+      },
+      error: (rej) => {
+        this.notifyEvent.emit({
+          severity: rej.error.message.severity,
+          summary: rej.error.message.summary,
+          detail: rej.error.message.detail,
+        });
+        this.apps = [];
+      },
     });
 
     this.cols = [

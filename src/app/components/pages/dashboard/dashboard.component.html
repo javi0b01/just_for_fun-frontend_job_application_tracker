@@ -6,14 +6,14 @@
   </hgroup>
   <section>
     @if (showForm) {
-    <app-jat-form />
+    <app-jat-form (notifyEvent)="onNotifyEvent($event)" />
     } @else {
     <p-button
       label="Add"
       icon="pi pi-plus-circle"
       (onClick)="showForm = true"
     />
-    <app-jat-table />
+    <app-jat-table (notifyEvent)="onNotifyEvent($event)" />
     }
   </section>
 </main>
