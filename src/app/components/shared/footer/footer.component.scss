@@ -1,0 +1,20 @@
+.dev {
+  padding: 10px;
+}
+.dev p {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 100;
+}
+.dev > p:first-child {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+}
+.dev > p:nth-child(2) {
+  text-align: right;
+}
+.dev img {
+  width: 26px;
+  margin: 0 5px;
+}
