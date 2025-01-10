@@ -4,18 +4,20 @@
     <h3>Track and organize your job search</h3>
     <h4>All your jobs search in one board</h4>
   </hgroup>
-  <section>
-    @if (showForm) {
+  @if (showForm) {
+  <section class="max-w-30rem m-auto">
     <app-jat-form (notifyEvent)="onNotifyEvent($event)" />
-    } @else {
+  </section>
+  } @else {
+  <section class="flex flex-column gap-3">
     <p-button
       label="Add"
       icon="pi pi-plus-circle"
       (onClick)="showForm = true"
     />
     <app-jat-table (notifyEvent)="onNotifyEvent($event)" />
-    }
   </section>
+  }
 </main>
 <aside>
   <p-toast

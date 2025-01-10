@@ -15,9 +15,9 @@
     </div>
     }
     <div class="text-center mb-2">
-      <p>
+      <div class="mb-1">
         <i class="pi pi-{{ isDarkMode ? 'moon' : 'sun' }}"></i>
-      </p>
+      </div>
       <p-inputSwitch [ngModel]="isDarkMode" (ngModelChange)="toggleTheme()" />
     </div>
   </div>

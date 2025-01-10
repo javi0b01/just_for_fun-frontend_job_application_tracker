@@ -1,4 +1,4 @@
-<main class="p-3">
+<main class="max-w-30rem m-auto p-3">
   <h2>Account</h2>
   @if(isLoggedIn) { @if (currentSession) {
   <p>Do you want to update your profile?</p>
@@ -6,7 +6,7 @@
   <p>Welcome!, to start please, first complete your profile</p>
   }
   <form [formGroup]="accountForm" (ngSubmit)="handleSubmit()">
-    <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-1 mt-2">
       <label for="firstName">First Name</label>
       <input
         pInputText
@@ -16,7 +16,7 @@
         formControlName="firstName"
       />
     </div>
-    <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-1 mt-2">
       <label for="lastName">Last Name</label>
       <input
         pInputText
@@ -26,7 +26,7 @@
         formControlName="lastName"
       />
     </div>
-    <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-1 mt-2">
       <label for="nickname">Nickname</label>
       <input
         pInputText
@@ -36,7 +36,7 @@
         formControlName="nickname"
       />
     </div>
-    <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-1 mt-2">
       <label for="image">Image</label>
       <p-fileUpload
         id="image"
@@ -49,7 +49,7 @@
         (onSelect)="handleSelect($event)"
       />
     </div>
-    <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-1 mt-2">
       <label for="phone">Phone</label>
       <p-inputNumber
         inputId="integeronly"
@@ -59,7 +59,7 @@
         formControlName="phone"
       />
     </div>
-    <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-1 mt-2 mb-3">
       <label for="birthDay">Birth Day</label>
       <p-calendar
         id="birthDay"

@@ -1,9 +1,15 @@
-<form [formGroup]="jatForm" (ngSubmit)="handleSubmit()">
+<form
+  [formGroup]="jatForm"
+  (ngSubmit)="handleSubmit()"
+  class="flex flex-column gap-3"
+>
   <div formGroupName="job">
-    <fieldset>
+    <fieldset class="border-round">
       <legend>Job</legend>
-      <div class="flex flex-column gap-2">
-        <label for="source">Source <span class="required">*</span></label>
+      <div class="flex flex-column gap-1 mt-2">
+        <label for="source"
+          >Source <span class="text-red-400 font-bold">*</span></label
+        >
         <input
           pInputText
           id="source"
@@ -13,7 +19,7 @@
           formControlName="source"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="uri">URI</label>
         <input
           pInputText
@@ -26,10 +32,12 @@
     </fieldset>
   </div>
   <div formGroupName="company">
-    <fieldset>
+    <fieldset class="border-round">
       <legend>Company</legend>
-      <div class="flex flex-column gap-2">
-        <label for="name">Name <span class="required">*</span></label>
+      <div class="flex flex-column gap-1 mt-2">
+        <label for="name"
+          >Name <span class="text-red-400 font-bold">*</span></label
+        >
         <input
           pInputText
           id="name"
@@ -39,7 +47,7 @@
           formControlName="name"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="contact">Contact</label>
         <input
           pInputText
@@ -49,7 +57,7 @@
           formControlName="contact"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="url">URL</label>
         <input
           pInputText
@@ -59,7 +67,7 @@
           formControlName="url"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="email">Email</label>
         <input
           pInputText
@@ -69,7 +77,7 @@
           formControlName="email"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="phone">Phone</label>
         <input
           pInputText
@@ -82,11 +90,11 @@
     </fieldset>
   </div>
   <div formGroupName="application">
-    <fieldset>
+    <fieldset class="border-round">
       <legend>Application</legend>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="dateApplied"
-          >Date Applied <span class="required">*</span></label
+          >Date Applied <span class="text-red-400 font-bold">*</span></label
         >
         <p-calendar
           id="dateApplied"
@@ -96,8 +104,10 @@
           formControlName="dateApplied"
         />
       </div>
-      <div class="flex flex-column gap-2">
-        <label for="response">Response <span class="required">*</span></label>
+      <div class="flex flex-column gap-1 mt-2">
+        <label for="response"
+          >Response <span class="text-red-400 font-bold">*</span></label
+        >
         <p-dropdown
           id="response"
           aria-describedby="response-help"
@@ -109,8 +119,10 @@
           formControlName="response"
         />
       </div>
-      <div class="flex flex-column gap-2">
-        <label for="position">Position <span class="required">*</span></label>
+      <div class="flex flex-column gap-1 mt-2">
+        <label for="position"
+          >Position <span class="text-red-400 font-bold">*</span></label
+        >
         <input
           pInputText
           id="position"
@@ -120,8 +132,10 @@
           formControlName="position"
         />
       </div>
-      <div class="flex flex-column gap-2">
-        <label for="model">Model <span class="required">*</span></label>
+      <div class="flex flex-column gap-1 mt-2">
+        <label for="model"
+          >Model <span class="text-red-400 font-bold">*</span></label
+        >
         <p-dropdown
           id="model"
           aria-describedby="model-help"
@@ -133,15 +147,13 @@
           formControlName="model"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-2 mt-4">
         <p-floatLabel>
           <textarea
             id="notes"
             aria-describedby="notes-help"
             autocomplete="off"
             formControlName="notes"
-            rows="5"
-            cols="30"
             pInputTextarea
           >
           </textarea>

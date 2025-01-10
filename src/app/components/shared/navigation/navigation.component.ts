@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { MenuItem } from 'primeng/api';
+import { MenubarModule } from 'primeng/menubar';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { SignService } from '../../../services/sign.service';
 import { StoreService } from '../../../services/store.service';
@@ -10,7 +11,7 @@ import { StoreService } from '../../../services/store.service';
 @Component({
   selector: 'app-navigation',
   standalone: true,
-  imports: [CommonModule, TabMenuModule],
+  imports: [CommonModule, MenubarModule, TabMenuModule],
   templateUrl: './navigation.component.html',
   styleUrl: './navigation.component.scss',
 })

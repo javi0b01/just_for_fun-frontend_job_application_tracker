@@ -1,3 +1,5 @@
-input {
-  width: 20rem;
+input,
+:host ::ng-deep .p-inputnumber,
+:host ::ng-deep .p-calendar {
+  width: 100%;
 }

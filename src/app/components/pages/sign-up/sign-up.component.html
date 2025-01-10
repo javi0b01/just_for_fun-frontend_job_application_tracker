@@ -1,8 +1,8 @@
-<main class="p-3">
+<main class="max-w-30rem m-auto p-3">
   <h2>Sign Up</h2>
   <form [formGroup]="signUpForm" (ngSubmit)="handleSignUp()">
-    <div class="flex flex-column gap-4">
-      <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-3">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="email">Email</label>
         <input
           pInputText
@@ -12,7 +12,7 @@
           formControlName="email"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="confirmEmail">Confirm your email</label>
         <input
           pInputText
@@ -24,10 +24,12 @@
       </div>
     </div>
     <small id="email-help"> Your email will be your username. </small>
-    <div class="flex flex-column gap-4 my-4">
-      <div class="flex flex-column gap-2">
+    <div class="flex flex-column gap-3 my-3">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="password">Password</label>
         <p-password
+          [inputStyle]="{ width: '100%' }"
+          [style]="{ width: '100%' }"
           [toggleMask]="true"
           [feedback]="false"
           inputId="password"
@@ -35,9 +37,11 @@
           formControlName="password"
         />
       </div>
-      <div class="flex flex-column gap-2">
+      <div class="flex flex-column gap-1 mt-2">
         <label for="confirmPassword">Confirm your password</label>
         <p-password
+          [inputStyle]="{ width: '100%' }"
+          [style]="{ width: '100%' }"
           [toggleMask]="true"
           [feedback]="false"
           inputId="confirmPassword"

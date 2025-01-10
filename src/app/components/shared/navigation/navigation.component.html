@@ -1,5 +1,5 @@
-<nav class="flex justify-content-center">
-  <p-tabMenu [model]="items">
+<nav class="lg:flex justify-content-center">
+  <p-menubar [model]="items">
     <ng-template pTemplate="item" let-item>
       <ng-container *ngIf="item.route; else elseBlock">
         <a [routerLink]="item.route" class="p-menuitem-link">
@@ -18,5 +18,5 @@
         </a>
       </ng-template>
     </ng-template>
-  </p-tabMenu>
+  </p-menubar>
 </nav>
