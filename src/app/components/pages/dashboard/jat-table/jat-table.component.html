@@ -34,7 +34,18 @@
             {{ rowData[col.section][col.field] | date }}
           </div>
           <ng-template #elseBlock>
-            {{ rowData[col.section][col.field] }}
+            <div *ngIf="col.type === 'action'; else elseBlock">
+              <p-button
+                icon="pi pi-pencil"
+                [rounded]="true"
+                [text]="true"
+                [raised]="true"
+                (onClick)="handleEdit(rowData)"
+              />
+            </div>
+            <ng-template #elseBlock>
+              {{ rowData[col.section][col.field] }}
+            </ng-template>
           </ng-template>
         </ng-template>
       </td>

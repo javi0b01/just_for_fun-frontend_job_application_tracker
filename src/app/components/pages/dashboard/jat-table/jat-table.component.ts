@@ -5,17 +5,13 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { ApplicationService } from '../../../../services/application.service';
-import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { IApp, INotify } from '../../../../interfaces/apiInterface';
+import { ApplicationService } from '../../../../services/application.service';
 
-interface INotify {
-  severity: string;
-  summary: string;
-  detail: string;
-}
-
-interface Column {
+interface IColumn {
   type?: string;
   section: string;
   field: string;
@@ -25,18 +21,19 @@ interface Column {
 @Component({
   selector: 'app-jat-table',
   standalone: true,
-  imports: [CommonModule, TableModule],
+  imports: [CommonModule, TableModule, ButtonModule],
   templateUrl: './jat-table.component.html',
   styleUrl: './jat-table.component.scss',
 })
 export class JatTableComponent implements OnInit {
   private appServ = inject(ApplicationService);
 
+  @Output() handleEditEvent: EventEmitter<IApp> = new EventEmitter<IApp>();
   @Output() notifyEvent: EventEmitter<INotify> = new EventEmitter<INotify>();
 
-  cols!: Column[];
+  cols!: IColumn[];
 
-  apps!: any[];
+  apps!: IApp[];
 
   ngOnInit(): void {
     this.appServ.getList().subscribe({
@@ -76,6 +73,16 @@ export class JatTableComponent implements OnInit {
       { section: 'application', field: 'position', header: 'POSITION' },
       { section: 'application', field: 'model', header: 'MODEL' },
       { section: 'application', field: 'notes', header: 'NOTES' },
+      {
+        type: 'action',
+        section: 'actions',
+        field: 'actions',
+        header: 'ACTIONS',
+      },
     ];
+  }
+
+  handleEdit(app: IApp) {
+    this.handleEditEvent.emit(app);
   }
 }
