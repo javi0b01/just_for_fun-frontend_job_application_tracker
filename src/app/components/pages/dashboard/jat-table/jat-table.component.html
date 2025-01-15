@@ -36,6 +36,7 @@
           <ng-template #elseBlock>
             <div *ngIf="col.type === 'action'; else elseBlock">
               <p-button
+                severity="help"
                 icon="pi pi-pencil"
                 [rounded]="true"
                 [text]="true"

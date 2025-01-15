@@ -68,8 +68,13 @@
         formControlName="birthDay"
       />
     </div>
-    <p-button type="submit" label="Submit" [raised]="true" severity="help" />
-    <!-- [disabled]="!accountForm.valid" -->
+    <p-button
+      severity="help"
+      type="submit"
+      label="Submit"
+      [raised]="true"
+      [disabled]="!accountForm.valid"
+    />
   </form>
   }@else {<p-messages
     [(value)]="message"

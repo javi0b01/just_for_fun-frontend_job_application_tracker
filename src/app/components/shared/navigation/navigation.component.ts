@@ -38,6 +38,8 @@ export class NavigationComponent implements OnInit {
   ];
   private account: MenuItem[] = [
     { route: '/account', label: 'Account', icon: 'pi pi-user' },
+  ];
+  private logout: MenuItem[] = [
     {
       label: 'Logout',
       icon: 'pi pi-sign-out',
@@ -61,8 +63,13 @@ export class NavigationComponent implements OnInit {
     else {
       const profile = this.storeServ.getProfile();
       if (profile === 100 || profile === 200)
-        this.items = [...this.home, ...this.dashboard, ...this.account];
-      if (profile === 300) this.items = [...this.account];
+        this.items = [
+          ...this.home,
+          ...this.dashboard,
+          ...this.account,
+          ...this.logout,
+        ];
+      if (profile === 300) this.items = [...this.logout];
     }
   }
 }

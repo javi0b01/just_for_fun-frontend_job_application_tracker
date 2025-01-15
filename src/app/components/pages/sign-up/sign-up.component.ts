@@ -67,9 +67,8 @@ export class SignUpComponent {
                 res.message.summary,
                 res.message.detail
               );
-              if (res.message.summary === 'Done!') {
+              if (res.message.summary === 'Done!')
                 this.router.navigateByUrl('/sign-in');
-              }
             },
             error: (rej) => {
               this.notify(

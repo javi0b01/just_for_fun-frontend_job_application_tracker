@@ -7,9 +7,9 @@
     <fieldset class="border-round">
       <legend>Job</legend>
       <div class="flex flex-column gap-1 mt-2">
-        <label for="source"
-          >Source <span class="text-red-400 font-bold">*</span></label
-        >
+        <label for="source">
+          Source <span class="text-red-400 font-bold">*</span>
+        </label>
         <input
           pInputText
           id="source"
@@ -133,9 +133,9 @@
         />
       </div>
       <div class="flex flex-column gap-1 mt-2">
-        <label for="model"
-          >Model <span class="text-red-400 font-bold">*</span></label
-        >
+        <label for="model">
+          Model <span class="text-red-400 font-bold">*</span>
+        </label>
         <p-dropdown
           id="model"
           aria-describedby="model-help"
@@ -163,10 +163,10 @@
     </fieldset>
   </div>
   <p-button
+    severity="help"
     type="submit"
     label="Submit"
     [raised]="true"
-    severity="help"
     [disabled]="!jatForm.valid"
   />
 </form>

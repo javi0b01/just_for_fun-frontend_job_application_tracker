@@ -13,6 +13,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { isEqual } from 'lodash';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
 import { InputTextModule } from 'primeng/inputtext';
@@ -109,7 +110,7 @@ export class JatFormComponent implements OnInit {
             Validators.required
           ),
           notes: new FormControl<string | null>(
-            this.currentApp.application.model
+            this.currentApp.application.notes
           ),
         }),
       });
@@ -143,13 +144,40 @@ export class JatFormComponent implements OnInit {
         ...this.jatForm.value,
       };
       if (payload.application) {
-        const response: any = this.jatForm.value.application?.response;
-        const model: any = this.jatForm.value.application?.model;
-        payload.application.response = response.value;
-        payload.application.model = model.value;
+        const response: string = this.jatForm.value.application.response.value
+          ? this.jatForm.value.application.response.value
+          : this.currentApp
+          ? this.currentApp.application.response
+          : null;
+        const model: string = this.jatForm.value.application.model.value
+          ? this.jatForm.value.application.model.value
+          : this.currentApp
+          ? this.currentApp.application.model
+          : null;
+        payload.application.response = response;
+        payload.application.model = model;
       }
       if (this.currentApp) {
-        console.log('update...payload:', payload);
+        const before = {
+          application: { ...this.currentApp.application },
+          company: { ...this.currentApp.company },
+          job: { ...this.currentApp.job },
+        };
+        const after = {
+          application: { ...payload.application },
+          company: { ...payload.company },
+          job: { ...payload.job },
+        };
+        const areEqual = isEqual(before, after);
+        if (areEqual) {
+          this.notifyEvent.emit({
+            severity: 'warn',
+            summary: 'Nothing to update!',
+            detail: 'There are no changes',
+          });
+        } else {
+          console.log('TODO: update');
+        }
       } else {
         payload.userId = this.storeServ.getUserId();
         this.appServ.newRegister(payload).subscribe({
@@ -161,7 +189,7 @@ export class JatFormComponent implements OnInit {
             });
             if (res.message.summary === 'Done!') {
               //this.router.navigateByUrl('/sign-in');
-              console.log('Done!');
+              console.log('TODO: Done!');
             }
           },
           error: (rej) => {
