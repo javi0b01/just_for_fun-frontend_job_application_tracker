@@ -92,6 +92,7 @@ export class AccountComponent implements OnInit {
     const unaryFunction = observable.pipe(delay(3000));
     unaryFunction.subscribe((result: any) => {
       this.router.navigateByUrl('/sign-in');
+      if (this.signServ.getIsLoggedIn()) this.signServ.logout();
     });
   }
 
@@ -130,7 +131,8 @@ export class AccountComponent implements OnInit {
             res.message.summary,
             res.message.detail
           );
-          if (res.message.summary === 'Done!') {
+          if (res.data && res.message.summary === 'Done!') {
+            console.log('HERE!!!');
             this.router.navigateByUrl('/dashboard');
           } else {
             this.notify(
@@ -141,11 +143,13 @@ export class AccountComponent implements OnInit {
           }
         },
         error: (rej) => {
+          console.log(rej);
           this.notify(
             rej.error.message.severity,
             rej.error.message.summary,
             rej.error.message.detail
           );
+          if (rej.status === 404) this.redirectToLogin();
         },
       });
     }
