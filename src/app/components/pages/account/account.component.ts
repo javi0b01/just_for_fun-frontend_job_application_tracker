@@ -131,10 +131,9 @@ export class AccountComponent implements OnInit {
             res.message.summary,
             res.message.detail
           );
-          if (res.data && res.message.summary === 'Done!') {
-            console.log('HERE!!!');
-            this.router.navigateByUrl('/dashboard');
-          } else {
+          if (res.data && res.message.summary === 'Done!')
+            this.redirectToLogin();
+          else {
             this.notify(
               res.message.severity,
               res.message.summary,
