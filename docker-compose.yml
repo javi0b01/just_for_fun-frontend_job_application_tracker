@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  mongo-db:
+    image: mongo
+    ports:
+      - '27017:27017'
+  client:
+    build: client
+    image: frontend
+    ports:
+      - '80:80'
