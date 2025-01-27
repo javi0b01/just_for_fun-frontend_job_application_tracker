@@ -1,6 +1,0 @@
-services:
-  client:
-    build: .
-    image: frontend
-    ports:
-      - '80:80'
