@@ -29,6 +29,7 @@ export class DashboardComponent {
     const cookie = document.cookie;
     const name = cookie.substring(5);
     this.notify(obj.severity, `${name} ${obj.summary}`, obj.detail);
+    if (obj.detail === 'New application created') this.clean();
   }
 
   notify(severity: string, summary: string, detail: string) {
@@ -37,5 +38,10 @@ export class DashboardComponent {
       summary,
       detail,
     });
+  }
+
+  clean() {
+    this.currentApp = null;
+    this.showForm = false;
   }
 }

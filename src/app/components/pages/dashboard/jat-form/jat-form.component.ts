@@ -187,10 +187,6 @@ export class JatFormComponent implements OnInit {
               summary: res.message.summary,
               detail: res.message.detail,
             });
-            if (res.message.summary === 'Done!') {
-              //this.router.navigateByUrl('/sign-in');
-              console.log('TODO: Done!');
-            }
           },
           error: (rej) => {
             this.notifyEvent.emit({
